@@ -7,11 +7,11 @@ def upload_to_bucket(blob_name, path_to_file, bucket_name):
     # Explicitly use service account credentials by specifying the private key
     # file.
     storage_client = storage.Client.from_service_account_json(
-        'gcsproject-8fba6e6ba029.json')
-
-    # print(buckets = list(storage_client.list_buckets())
+        'firebasestorage-305919-ce0834d3d511.json')
 
     bucket = storage_client.get_bucket(bucket_name)
+    # print('STORAGE ---->', list(storage_client.list_blobs(bucket)))
+
     blob = bucket.blob(blob_name)
     blob.upload_from_filename(path_to_file)
 
