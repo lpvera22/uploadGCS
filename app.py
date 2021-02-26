@@ -80,17 +80,19 @@ def uploaded():
 @cross_origin()
 def u():
     toDownload = request.get_json()['url']
-    # r = requests.get(toDownload, allow_redirects=True)
-    # now = datetime.now()
-    # timestamp = datetime.timestamp(now)
-    # firstpos = toDownload.rfind("/")
-    # lastpos = len(toDownload)
-    #
-    # filename = toDownload[firstpos + 1:lastpos]
-    # os.mkdir(UPLOAD_FOLDER + str(timestamp) + '/')
+    r = requests.get(toDownload, allow_redirects=True)
+    now = datetime.now()
+    timestamp = datetime.timestamp(now)
+    firstpos = toDownload.rfind("/")
+    lastpos = len(toDownload)
+
+    filename = toDownload[firstpos + 1:lastpos]
+    os.mkdir(UPLOAD_FOLDER + str(timestamp) + '/')
     # open(UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'wb').write(r.content)
     # url = upload_to_bucket(filename, UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'gcs_project')
-    return jsonify({'url': toDownload})
+
+    return jsonify({'n': lastpos})
+
     # return jsonify(toDownload)
 
 
