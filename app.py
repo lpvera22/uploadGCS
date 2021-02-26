@@ -10,10 +10,18 @@ from zipfile import ZipFile
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import requests
+from firebase_admin import credentials, firestore, initialize_app
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+# Initialize Firestore DB
+# cred = credentials.Certificate('key.json')
+# default_app = initialize_app(cred)
+# db = firestore.client()
+# todo_ref = db.collection('todos')
+
 
 UPLOAD_FOLDER = "upload/"
 if not os.path.exists(UPLOAD_FOLDER):
@@ -72,17 +80,17 @@ def uploaded():
 @cross_origin()
 def u():
     toDownload = request.get_json()['url']
-    r = requests.get(toDownload, allow_redirects=True)
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    firstpos = toDownload.rfind("/")
-    lastpos = len(toDownload)
-
-    filename = toDownload[firstpos + 1:lastpos]
-    os.mkdir(UPLOAD_FOLDER + str(timestamp) + '/')
-    open(UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'wb').write(r.content)
-    url = upload_to_bucket(filename, UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'gcs_project')
-    return jsonify({'url': url})
+    # r = requests.get(toDownload, allow_redirects=True)
+    # now = datetime.now()
+    # timestamp = datetime.timestamp(now)
+    # firstpos = toDownload.rfind("/")
+    # lastpos = len(toDownload)
+    #
+    # filename = toDownload[firstpos + 1:lastpos]
+    # os.mkdir(UPLOAD_FOLDER + str(timestamp) + '/')
+    # open(UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'wb').write(r.content)
+    # url = upload_to_bucket(filename, UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'gcs_project')
+    return jsonify({'url': toDownload})
     # return jsonify(toDownload)
 
 
@@ -150,4 +158,4 @@ if __name__ == '__main__':
 
     # host='0.0.0.0',debug=True,ssl_context=('cert.pem', 'key.pem')
 
-    app.run(host='0.0.0.0',debug=True)
+    app.run(host='0.0.0.0', debug=True, port=int(os.environ.get('PORT', 8080)))
