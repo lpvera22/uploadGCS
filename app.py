@@ -88,10 +88,10 @@ def u():
 
     filename = toDownload[firstpos + 1:lastpos]
     os.mkdir(UPLOAD_FOLDER + str(timestamp) + '/')
-    # open(UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'wb').write(r.content)
-    # url = upload_to_bucket(filename, UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'gcs_project')
+    open(UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'wb').write(r.content)
+    url = upload_to_bucket(filename, UPLOAD_FOLDER + str(timestamp) + '/' + filename, 'gcs_project')
 
-    return jsonify({'n': lastpos})
+    return jsonify({'url': url})
 
     # return jsonify(toDownload)
 
